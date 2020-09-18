@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name">Help me with</string>
+    <string name="welcome">Welcome to HelpMeWith</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in_headline">Log in</string>
+    <string name="sign_in_login">Login:</string>
+    <string name="sign_in_password">Password:</string>
+    <string name="hint_sign_in_login">Enter your login</string>
+    <string name="hint_sign_in_password">Enter your password</string>
+    <string name="button_back">Back</string>
+    <string name="sign_up_first_name">First name:</string>
+    <string name="sign_up_last_name">Last name:</string>
+    <string name="sign_up_login">Login:</string>
+    <string name="sign_up_password">Password:</string>
+    <string name="sign_up_is_tutor">I\'m a tutor</string>
+    <string name="sign_up_headline">Enter information about yourself</string>
+    <string name="sign_up_is_not_remote">Add city</string>
+    <string name="sign_up_city">City:</string>
+    <string-array name="cities">
+        <item>MOSCOW</item>
+        <item>KAZAN</item>
+    </string-array>
+    <string-array name="subjects">
+        <item>MATHS</item>
+        <item>CHEMISTRY</item>
+        <item>PHYSICS</item>
+        <item>ENGLISH</item>
+        <item>RUSSIAN</item>
+        <item>SPANISH</item>
+        <item>GEOGRAPHY</item>
+        <item>GUITAR</item>
+    </string-array>
+    <string name="add_subject">Add a subject</string>
+    <string name="sign_up_subject">Subject:</string>
+    <string name="sign_up_experience">Experience:</string>
+    <string name="sign_up_hourly_fee">Hourly fee:</string>
+    <string name="sign_up_experience_hint">In years</string>
+    <string name="sign_up_hourly_fee_hint">In RUB</string>
+    <string name="sign_up_tv_subjects">You have to add at least one subject</string>
+    <string name="offers_headline">Offers</string>
+    <string name="offers_by_student">Offers by student:</string>
+    <string name="offers_by_tutor">Offers by tutor:</string>
+    <string name="meetings_by_student">Meetings by student:</string>
+    <string name="meetings_by_tutor">Meetings by tutor:</string>
+    <string name="search_subject">Subject:</string>
+    <string name="search_max_hourly_fee">Max hourly fee:</string>
+    <string name="search_city">Max hourly fee:</string>
+    <string name="search_hourly_fee_hint">In RUB</string>
+    <string name="btn_search">Search</string>
+    <string name="search_is_not_remote">Isn\'t remote</string>
+    <string name="search_headline">Enter info about tutor</string>
+
+    <string name="profile_headline">Profile</string>
+    <string name="profile_first_name">First name:</string>
+    <string name="profile_last_name">Last name:</string>
+    <string name="profile_login">Login:</string>
+    <string name="profile_rating">Rating:</string>
+    <string name="profile_tv_password">Enter data here only if you want to change your password:</string>
+    <string name="profile_old_password">Old pass:</string>
+    <string name="profile_new_password">New pass:</string>
+    <string name="profile_is_tutor">I\'m a tutor</string>
+    <string name="profile_is_not_remote">Add city</string>
+    <string name="profile_city">City:</string>
+    <string name="profile_subject">Subject:</string>
+    <string name="profile_experience">Experience:</string>
+    <string name="profile_hourly_fee">Hourly fee:</string>
+    <string name="profile_experience_hint">In years</string>
+    <string name="profile_hourly_fee_hint">In RUB</string>
+    <string name="profile_reviews">Reviews:</string>
+    <string name="profile_btn_edit">Edit</string>
+
+    <string name="tutor_headline">User</string>
+    <string name="tutor_first_name">First name:</string>
+    <string name="tutor_last_name">Last name:</string>
+    <string name="tutor_rating">Rating:</string>
+    <string name="tutor_reviews">Reviews:</string>
+    <string name="tutor_offer">Send offer</string>
+    <string name="tutor_subjects">Subjects:</string>
+    <string name="tutor_rv_rating">Rating:</string>
+
+    <string name="bnv_menu_meetings">Meetings</string>
+    <string name="bnv_menu_search">Search</string>
+    <string name="bnv_menu_offers">Offers</string>
+    <string name="bnv_menu_profile">Profile</string>
+
+    <string name="snackbar_sign_in_error_bad_request">Login or password is false</string>
+
+    <string name="snackbar_sign_up_error_fill_fields">You have to fill all fields</string>
+    <string name="snackbar_sign_up_error_fields_length">Login has to contain at least 4 symbols and password has to contain at least 8 symbols</string>
+    <string name="snackbar_sign_up_error_tutor">Tutor has to have at least one subject and subject has to contain all required information</string>
+    <string name="snackbar_sign_up_error_bad_request">Login is already used</string>
+
+    <string name="profile_btn_logout">Logout</string>
+    <string name="snackbar_profile_error_tutor">Tutor has to have at least one subject and subject has to contain all required information</string>
+    <string name="snackbar_profile_error_fill_fields">You have to fill all fields</string>
+    <string name="snackbar_profile_error_pass_empty">You have to fill all password fields</string>
+    <string name="snackbar_profile_error_pass_length">New password has to contain at least 8 symbols</string>
+    <string name="snackbar_profile_error_pass_equality">New password cannot be the same as the old one</string>
+    <string name="snackbar_profile_error_old_pass_incorrect">Old password is incorrect</string>
+    <string name="snackbar_profile_ok">You have edited your profile!</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF3F51B5</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorSignInBackground">#3F51B5</color>
+    <color name="colorButtonText">#000000</color>
+    <color name="welcomeActivityBackground">#3F51B5</color>
+    <color name="colorSelectedBNVItem">#8BC34A</color>
+    <color name="colorBNVText">#B6B6B6</color>
+</resources>
