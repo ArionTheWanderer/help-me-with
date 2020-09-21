@@ -40,6 +40,7 @@
                 android:textSize="16sp"/>
 
             <Spinner
+                android:id="@+id/spinner_search_subject"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                 android:textSize="16sp"/>
 
             <EditText
+                android:id="@+id/et_search_max_hourly_fee"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -73,18 +75,20 @@
         </LinearLayout>
 
         <CheckBox
+            android:id="@+id/cb_search_is_not_remote"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search_is_not_remote"
             android:checked="false"/>
 
-        <!--<FrameLayout
+        <FrameLayout
             android:id="@+id/fl_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>-->
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <Button
+            android:id="@+id/btn_search_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_search"

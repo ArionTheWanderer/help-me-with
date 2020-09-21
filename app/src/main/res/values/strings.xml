@@ -100,4 +100,8 @@
     <string name="snackbar_profile_error_old_pass_incorrect">Old password is incorrect</string>
     <string name="snackbar_profile_ok">You have edited your profile!</string>
 
+    <string name="search_title">Searched tutors</string>
+    <string name="search_toast_city_empty">You have to choose a city</string>
+
+    <string name="tutor_title">Tutor</string>
 </resources>

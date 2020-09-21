@@ -7,6 +7,7 @@ import com.hfad.helpmewith.authentication.login.data.network.SignInService
 import com.hfad.helpmewith.authentication.register.data.network.SignUpService
 import com.hfad.helpmewith.api.interceptor.AuthInterceptor
 import com.hfad.helpmewith.main.profile.data.network.ProfileService
+import com.hfad.helpmewith.main.search.data.network.SearchService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,9 +67,17 @@ class RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideProfileService(retrofit: Retrofit.Builder) : ProfileService {
+    fun provideProfileService(retrofit: Retrofit.Builder): ProfileService {
         return retrofit
             .build()
             .create(ProfileService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchService(retrofit: Retrofit.Builder): SearchService {
+        return retrofit
+            .build()
+            .create(SearchService::class.java)
     }
 }

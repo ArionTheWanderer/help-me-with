@@ -52,4 +52,8 @@ constructor(): EntityMapperResponse<TutorResponse, UserWrapperModel> {
             tutorInfo = tutorInfo
         )
     }
+
+    fun mapFromEntityList(entities: List<TutorResponse>): List<UserWrapperModel>{
+        return entities.map { mapFromEntity(it) }
+    }
 }

@@ -1,10 +1,6 @@
 package com.hfad.helpmewith.app.di
 
-import com.hfad.helpmewith.authentication.login.data.network.SignInService
-import com.hfad.helpmewith.authentication.register.data.network.SignUpService
-import com.hfad.helpmewith.authentication.login.data.mapper.SignInMapper
 import com.hfad.helpmewith.authentication.login.data.qualifier.SignInRepositoryMain
-import com.hfad.helpmewith.authentication.register.data.mapper.SignUpMapper
 import com.hfad.helpmewith.authentication.login.data.repository.SignInRepository
 import com.hfad.helpmewith.authentication.login.data.repository.SignInRepositoryImpl
 import com.hfad.helpmewith.authentication.register.data.qualifier.SignUpRepositoryMain
@@ -13,39 +9,45 @@ import com.hfad.helpmewith.authentication.register.data.repository.SignUpReposit
 import com.hfad.helpmewith.main.profile.data.qualifier.ProfileRepositoryMain
 import com.hfad.helpmewith.main.profile.data.repository.ProfileRepository
 import com.hfad.helpmewith.main.profile.data.repository.ProfileRepositoryImpl
-import com.hfad.helpmewith.util.SessionManager
+import com.hfad.helpmewith.main.search.data.qualifier.SearchRepositoryMain
+import com.hfad.helpmewith.main.search.data.repository.SearchRepository
+import com.hfad.helpmewith.main.search.data.repository.SearchRepositoryImpl
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityRetainedComponent::class)
+@InstallIn(ApplicationComponent::class)
 abstract class RepositoryModule {
 
     @SignInRepositoryMain
-    @ActivityRetainedScoped
+    @Singleton
     @Binds
     abstract fun provideSignInRepositoryMain(
         signInRepositoryImpl: SignInRepositoryImpl
     ): SignInRepository
 
     @SignUpRepositoryMain
-    @ActivityRetainedScoped
+    @Singleton
     @Binds
     abstract fun provideSignUpRepositoryMain(
         signUpRepositoryImpl: SignUpRepositoryImpl
     ): SignUpRepository
 
     @ProfileRepositoryMain
-    @ActivityRetainedScoped
+    @Singleton
     @Binds
     abstract fun provideProfileRepositoryMain(
         profileRepositoryImpl: ProfileRepositoryImpl
     ): ProfileRepository
+
+    @SearchRepositoryMain
+    @Singleton
+    @Binds
+    abstract fun provideSearchRepositoryMain(
+        searchRepositoryImpl: SearchRepositoryImpl
+    ): SearchRepository
 
 }

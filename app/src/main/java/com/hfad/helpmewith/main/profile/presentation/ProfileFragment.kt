@@ -16,9 +16,6 @@ import com.hfad.helpmewith.main.profile.data.model.ProfileUserModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileUserWrapperModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile2.*
-import kotlinx.android.synthetic.main.fragment_profile2.btn_profile_logout
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
@@ -57,13 +54,7 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
                 /*val fragment = childFragmentManager.findFragmentById(fl_sign_up.id)
                 onAttachToChildFragment(fragment)*/
             } else {
-                val fragment = childFragmentManager.findFragmentById(fl_profile_subjects.id)
-                if (fragment != null) {
-                    childFragmentManager.commit {
-                        remove(fragment)
-                        tutorsInfoGetter = null
-                    }
-                }
+                deletePreviousFragment()
             }
         }
         btn_edit_info.setOnClickListener {

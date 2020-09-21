@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/page_meetings"
-        android:icon="@drawable/meetings_black_24dp"
+        android:icon="@drawable/ic_meetings_black_24dp"
         android:title="@string/bnv_menu_meetings" />
     <item
         android:id="@+id/page_search"
-        android:icon="@drawable/search_black_24dp"
+        android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/bnv_menu_search" />
     <item
         android:id="@+id/page_offers"
-        android:icon="@drawable/offers_black_24dp"
+        android:icon="@drawable/ic_offers_black_24dp"
         android:title="@string/bnv_menu_offers" />
     <item
         android:id="@+id/page_profile"
-        android:icon="@drawable/profile_black_24dp"
+        android:icon="@drawable/ic_profile_black_24dp"
         android:title="@string/bnv_menu_profile" />
 </menu>

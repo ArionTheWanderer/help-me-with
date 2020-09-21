@@ -8,7 +8,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 class SessionManager
-    @Inject
     constructor(context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(Constants.TOKEN_PREFS, Context.MODE_PRIVATE)
 

@@ -10,4 +10,6 @@ object Constants {
     const val URL_SIGN_UP = "signUp"
     const val URL_PROFILE = "self"
 
+    const val PROFILE_TAG = "PROFILE"
+    const val SEARCH_TAG = "SEARCH"
 }

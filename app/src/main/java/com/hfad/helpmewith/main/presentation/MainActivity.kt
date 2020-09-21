@@ -13,6 +13,9 @@ import com.hfad.helpmewith.Constants
 import com.hfad.helpmewith.R
 import com.hfad.helpmewith.main.presentation.factory.MainFragmentFactory
 import com.hfad.helpmewith.main.profile.presentation.ProfileFragment
+import com.hfad.helpmewith.main.search.data.model.SearchModel
+import com.hfad.helpmewith.main.search.presentation.SearchFragment
+import com.hfad.helpmewith.main.search.presentation.SearchTutorsActivity
 import com.hfad.helpmewith.start.StartActivity
 import com.hfad.helpmewith.util.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +25,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut {
+class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut, SearchFragment.IOnSearch {
 
     @Inject
     lateinit var fragmentFactory: MainFragmentFactory
@@ -35,6 +38,10 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut {
         setContentView(R.layout.activity_main)
         supportFragmentManager.fragmentFactory = fragmentFactory
         setListener()
+        val fragment = supportFragmentManager.findFragmentById(container_main.id)
+        if (fragment == null) {
+            bnv_main.selectedItemId = R.id.page_profile
+        }
     }
 
     private fun setListener() {
@@ -46,7 +53,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut {
                     true
                 }
                 R.id.page_search -> {
-                    Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
+                    openFragment(SearchFragment.newInstance(), "SEARCH")
+                    // Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
                     // openFragment(InvalidsFragment.newInstance(), "invalids")
                     true
                 }
@@ -62,7 +70,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut {
                 else -> false
             }
         }
-        bnv_main.selectedItemId = R.id.page_profile
+        // bnv_main.selectedItemId = R.id.page_profile
     }
 
     private fun openFragment(fragment: Fragment, tag: String) {
@@ -85,5 +93,9 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut {
         sessionManager.deleteToken()
         Log.d(Constants.TOKEN_LOG, "Token value: ${sessionManager.fetchAuthToken()}")
         StartActivity.start(this)
+    }
+
+    override fun onSearch(searchModel: SearchModel) {
+        SearchTutorsActivity.start(this, searchModel)
     }
 }
