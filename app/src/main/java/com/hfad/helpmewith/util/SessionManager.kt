@@ -3,9 +3,6 @@ package com.hfad.helpmewith.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.hfad.helpmewith.Constants
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 class SessionManager
     constructor(context: Context) {

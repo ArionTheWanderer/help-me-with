@@ -2,8 +2,8 @@ package com.hfad.helpmewith.authentication.presentation.factory
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import com.hfad.helpmewith.authentication.presentation.WelcomeFragment
 import com.hfad.helpmewith.authentication.login.presentation.SignInFragment
+import com.hfad.helpmewith.authentication.presentation.WelcomeFragment
 import com.hfad.helpmewith.authentication.register.presentation.SignUpFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

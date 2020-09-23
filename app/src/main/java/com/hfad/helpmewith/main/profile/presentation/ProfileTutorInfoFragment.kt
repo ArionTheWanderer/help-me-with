@@ -1,6 +1,7 @@
 package com.hfad.helpmewith.main.profile.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -8,11 +9,13 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.hfad.helpmewith.Constants
 import com.hfad.helpmewith.R
+import com.hfad.helpmewith.app.data.model.UserWrapperModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileTutorInfoModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileTutorsSubjectModel
+import com.hfad.helpmewith.util.DataState
 import kotlinx.android.synthetic.main.fragment_tutor_info.*
-import kotlinx.android.synthetic.main.item_offer.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -46,31 +49,46 @@ class ProfileTutorInfoFragment : Fragment(R.layout.fragment_tutor_info),
     }
 
     private fun subscribeObservers() {
-        profileViewModel.tutorInfo.observe(viewLifecycleOwner) {
-            cb_tutor_info_add_city.isChecked = it?.isNotRemote ?: false
-            if (it?.isNotRemote == true) {
-                spinner_tutor_info_city.setSelection(getIndex(spinner_tutor_info_city, it.city ?: ""))
-            } else {
-                spinner_tutor_info_city.isEnabled = false
-                spinner_tutor_info_city.isClickable = false
-            }
-            if (it.tutorsSubjects != null) {
-                for (i in it.tutorsSubjects.indices) {
-                    val subject = layoutInflater.inflate(R.layout.fragment_tutors_subject, null)
-                    val subjectName = subject.findViewById<Spinner>(R.id.spinner_sign_up_subject)
-                    val experience = subject.findViewById<EditText>(R.id.experience_sign_up)
-                    val hourlyFee = subject.findViewById<EditText>(R.id.hourly_fee_sign_up)
-                    subjectName.setSelection(getIndex(subjectName, it.tutorsSubjects[i].subject))
-                    experience.setText(it.tutorsSubjects[i].experience.toString())
-                    hourlyFee.setText(it.tutorsSubjects[i].hourlyFee.toString())
-                    val deleteButton = subject.findViewById<Button>(R.id.btn_tutor_info_delete_subject)
-                    deleteButton.setOnClickListener {
-                        ll_sign_up_subjects.removeView(subject)
-                    }
-                    ll_sign_up_subjects.addView(subject)
+        profileViewModel.userWrapperInfo.observe(viewLifecycleOwner) { dataState ->
+            when (dataState) {
+                is DataState.Success<UserWrapperModel> -> {
+                    setContent(dataState.data)
+                }
+                is DataState.Error -> {
+
+                }
+                is DataState.Loading -> {
+
                 }
             }
 
+
+        }
+    }
+
+    private fun setContent(data: UserWrapperModel) {
+        cb_tutor_info_add_city.isChecked = data.tutorInfo.isNotRemote ?: false
+        if (data.tutorInfo.isNotRemote == true) {
+            spinner_tutor_info_city.setSelection(getIndex(spinner_tutor_info_city, data.tutorInfo.city ?: ""))
+        } else {
+            spinner_tutor_info_city.isEnabled = false
+            spinner_tutor_info_city.isClickable = false
+        }
+        if (data.tutorInfo.tutorsSubjects != null) {
+            for (i in data.tutorInfo.tutorsSubjects.indices) {
+                val subject = layoutInflater.inflate(R.layout.fragment_tutors_subject, null)
+                val subjectName = subject.findViewById<Spinner>(R.id.spinner_sign_up_subject)
+                val experience = subject.findViewById<EditText>(R.id.experience_sign_up)
+                val hourlyFee = subject.findViewById<EditText>(R.id.hourly_fee_sign_up)
+                subjectName.setSelection(getIndex(subjectName, data.tutorInfo.tutorsSubjects[i].subject))
+                experience.setText(data.tutorInfo.tutorsSubjects[i].experience.toString())
+                hourlyFee.setText(data.tutorInfo.tutorsSubjects[i].hourlyFee.toString())
+                val deleteButton = subject.findViewById<Button>(R.id.btn_tutor_info_delete_subject)
+                deleteButton.setOnClickListener {
+                    ll_sign_up_subjects.removeView(subject)
+                }
+                ll_sign_up_subjects.addView(subject)
+            }
         }
     }
 
@@ -105,11 +123,19 @@ class ProfileTutorInfoFragment : Fragment(R.layout.fragment_tutor_info),
                     return null
                 }
             }
+            val checkDistinctSubjectsList = subjects.distinctBy {
+                it.subject
+            }
             var isNotRemote = false
             var city: String? = null
             if (cb_tutor_info_add_city.isChecked) {
                 isNotRemote = true
                 city = spinner_tutor_info_city.selectedItem.toString()
+            }
+            Log.d(Constants.PROFILE_TAG, "checkDistinctSubjectsList.size = ${checkDistinctSubjectsList.size}")
+            Log.d(Constants.PROFILE_TAG, "subjects.size = ${subjects.size}")
+            if (checkDistinctSubjectsList.size != subjects.size) {
+                return ProfileTutorInfoModel(isNotRemote, city, null)
             }
             return ProfileTutorInfoModel(isNotRemote, city, subjects)
         } else {
@@ -121,6 +147,4 @@ class ProfileTutorInfoFragment : Fragment(R.layout.fragment_tutor_info),
         @JvmStatic
         fun newInstance() = ProfileTutorInfoFragment()
     }
-
-
 }

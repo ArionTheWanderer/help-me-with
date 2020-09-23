@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.item_tutor.*
 class TutorsItemHolder (
     override val containerView: View,
     private val subjectName: String,
-    private val clickLambda: (UserWrapperModel) -> Unit
+    private val sendOfferLambda: (UserWrapperModel) -> Unit,
+    private val showTutorLambda: (UserWrapperModel) -> Unit
 ) : RecyclerView.ViewHolder(containerView),
     LayoutContainer {
 
@@ -35,18 +36,22 @@ class TutorsItemHolder (
         val flName = tutor.userInfo.firstName + " " + tutor.userInfo.lastName
         tv_tutors_tutor_name.text = flName
         tv_tutors_tutor_subject.text = subjectName
-        tv_tutors_tutor_payment.text = subject?.hourlyFee.toString() ?: ""
+        tv_tutors_tutor_payment.text = subject?.hourlyFee.toString()
         tv_tutors_tutor_city.text = tutor.tutorInfo.city
         btn_tutors_send.setOnClickListener {
-            clickLambda(tutor)
+            sendOfferLambda(tutor)
+        }
+        itemView.setOnClickListener {
+            showTutorLambda(tutor)
         }
     }
 
     companion object {
-        fun create(parent: ViewGroup, subjectName: String, clickLambda: (UserWrapperModel) -> Unit, ) =
+        fun create(parent: ViewGroup, subjectName: String,
+                   clickLambda: (UserWrapperModel) -> Unit, showTutorLambda: (UserWrapperModel) -> Unit) =
             TutorsItemHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_tutor, parent, false),
-                subjectName, clickLambda
+                subjectName, clickLambda, showTutorLambda
             )
     }
 }

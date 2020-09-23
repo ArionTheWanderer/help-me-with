@@ -2,22 +2,20 @@ package com.hfad.helpmewith.main.presentation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import com.hfad.helpmewith.Constants
 import com.hfad.helpmewith.R
+import com.hfad.helpmewith.main.meetings.presentation.MeetingsFragment
+import com.hfad.helpmewith.main.offers.presentation.OffersFragment
 import com.hfad.helpmewith.main.presentation.factory.MainFragmentFactory
 import com.hfad.helpmewith.main.profile.presentation.ProfileFragment
 import com.hfad.helpmewith.main.search.data.model.SearchModel
 import com.hfad.helpmewith.main.search.presentation.SearchFragment
 import com.hfad.helpmewith.main.search.presentation.SearchTutorsActivity
 import com.hfad.helpmewith.start.StartActivity
-import com.hfad.helpmewith.util.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,9 +27,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut, SearchFragm
 
     @Inject
     lateinit var fragmentFactory: MainFragmentFactory
-
-    @Inject
-    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,19 +43,15 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut, SearchFragm
         bnv_main.setOnNavigationItemSelectedListener { item: MenuItem ->
             return@setOnNavigationItemSelectedListener when (item.itemId) {
                 R.id.page_meetings -> {
-                    Toast.makeText(this, "Meetings", Toast.LENGTH_SHORT).show()
-                    // openFragment(CopyrightFragment.newInstance(), "copyright")
+                    openFragment(MeetingsFragment.newInstance(), "MEETINGS")
                     true
                 }
                 R.id.page_search -> {
                     openFragment(SearchFragment.newInstance(), "SEARCH")
-                    // Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
-                    // openFragment(InvalidsFragment.newInstance(), "invalids")
                     true
                 }
                 R.id.page_offers -> {
-                    Toast.makeText(this, "Offers", Toast.LENGTH_SHORT).show()
-                    // openFragment(MemesFragment.newInstance(), "invalids")
+                    openFragment(OffersFragment.newInstance(), "OFFERS")
                     true
                 }
                 R.id.page_profile -> {
@@ -70,7 +61,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut, SearchFragm
                 else -> false
             }
         }
-        // bnv_main.selectedItemId = R.id.page_profile
+        bnv_main.setOnNavigationItemReselectedListener {}
     }
 
     private fun openFragment(fragment: Fragment, tag: String) {
@@ -89,9 +80,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.LoggedOut, SearchFragm
     }
 
     override fun logOut() {
-        Log.d(Constants.TOKEN_LOG, "Token value: ${sessionManager.fetchAuthToken()}")
-        sessionManager.deleteToken()
-        Log.d(Constants.TOKEN_LOG, "Token value: ${sessionManager.fetchAuthToken()}")
         StartActivity.start(this)
     }
 

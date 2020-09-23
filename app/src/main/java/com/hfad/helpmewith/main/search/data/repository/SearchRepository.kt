@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     suspend fun getTutors(searchModel: SearchModel): Flow<DataState<List<UserWrapperModel>>>
+
+    suspend fun getTutor(id: Long): Flow<DataState<UserWrapperModel>>
 }

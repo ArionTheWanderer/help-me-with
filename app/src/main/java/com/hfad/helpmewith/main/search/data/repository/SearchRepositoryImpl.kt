@@ -6,9 +6,11 @@ import com.hfad.helpmewith.main.search.data.mapper.SearchFormMapper
 import com.hfad.helpmewith.main.search.data.model.SearchModel
 import com.hfad.helpmewith.main.search.data.network.SearchService
 import com.hfad.helpmewith.util.DataState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SearchRepositoryImpl
@@ -39,6 +41,29 @@ private val searchFormMapper: SearchFormMapper
             }
         } else {
             emit(DataState.Error("Unsuccessful response"))
+        }
+    }
+
+    override suspend fun getTutor(id: Long): Flow<DataState<UserWrapperModel>>  = flow {
+        emit(DataState.Loading)
+        delay(1000)
+        val tutorResponse = withContext(Dispatchers.IO) {
+            searchService.findTutor(id)
+        }
+        if (tutorResponse.isSuccessful) {
+            val tutorResponseBody = tutorResponse.body()
+            if (tutorResponseBody != null) {
+                val tutorModel = tutorResponseBody.let {
+                    tutorsResponseMapper.mapFromEntity(
+                        it
+                    )
+                }
+                emit(DataState.Success(tutorModel))
+            } else {
+                emit(DataState.Error("Body is empty"))
+            }
+        } else {
+            emit(DataState.Error("Bad request"))
         }
     }
 }

@@ -93,6 +93,7 @@
 
     <string name="profile_btn_logout">Logout</string>
     <string name="snackbar_profile_error_tutor">Tutor has to have at least one subject and subject has to contain all required information</string>
+    <string name="snackbar_profile_error_tutor_same_subjects">You cannot have the same subjects</string>
     <string name="snackbar_profile_error_fill_fields">You have to fill all fields</string>
     <string name="snackbar_profile_error_pass_empty">You have to fill all password fields</string>
     <string name="snackbar_profile_error_pass_length">New password has to contain at least 8 symbols</string>
@@ -104,4 +105,9 @@
     <string name="search_toast_city_empty">You have to choose a city</string>
 
     <string name="tutor_title">Tutor</string>
+    <string name="user_is_tutor">I\'m a tutor</string>
+    <string name="tutor_is_not_remote">Is not remote</string>
+
+    <string name="meetings_dummy">Meetings</string>
+    <string name="offers_dummy">Offers</string>
 </resources>

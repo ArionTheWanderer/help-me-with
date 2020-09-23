@@ -2,9 +2,9 @@ package com.hfad.helpmewith.authentication.login.data.repository
 
 import android.util.Log
 import com.hfad.helpmewith.Constants
-import com.hfad.helpmewith.authentication.login.data.network.SignInService
 import com.hfad.helpmewith.authentication.login.data.mapper.SignInMapper
 import com.hfad.helpmewith.authentication.login.data.model.SignInModel
+import com.hfad.helpmewith.authentication.login.data.network.SignInService
 import com.hfad.helpmewith.util.SessionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,11 +31,5 @@ class SignInRepositoryImpl
         } else {
             false
         }
-
-        /*val response = withContext(Dispatchers.IO) {
-            googleService.getGoogle()
-        }
-
-        return response.toString().isNotEmpty()*/
     }
 }

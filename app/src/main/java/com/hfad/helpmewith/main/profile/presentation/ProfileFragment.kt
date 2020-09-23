@@ -2,28 +2,24 @@ package com.hfad.helpmewith.main.profile.presentation
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.hfad.helpmewith.R
-import com.hfad.helpmewith.app.data.model.TutorInfoModel
-import com.hfad.helpmewith.authentication.register.data.model.SignUpModel
+import com.hfad.helpmewith.app.data.model.UserWrapperModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileTutorInfoModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileUserModel
 import com.hfad.helpmewith.main.profile.data.model.ProfileUserWrapperModel
+import com.hfad.helpmewith.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancelChildren
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by MainScope() {
+class ProfileFragment: Fragment(R.layout.fragment_profile) {
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -42,6 +38,7 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
         btn_profile_logout.setOnClickListener {
+            profileViewModel.deleteUserFromDB()
             listener?.logOut()
         }
         cb_profile_tutor.setOnClickListener {
@@ -51,8 +48,6 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
                     add(fl_profile_subjects.id, fragment)
                     onAttachToChildFragment(fragment)
                 }
-                /*val fragment = childFragmentManager.findFragmentById(fl_sign_up.id)
-                onAttachToChildFragment(fragment)*/
             } else {
                 deletePreviousFragment()
             }
@@ -63,41 +58,55 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
         profileViewModel.getProfile()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineContext.cancelChildren()
+    private fun subscribeObservers() {
+        profileViewModel.userWrapperInfo.observe(viewLifecycleOwner) { dataState ->
+            when (dataState) {
+                is DataState.Success<UserWrapperModel> -> {
+                    displayProgressBar(false)
+                    setContent(dataState.data)
+                    displayContent(true)
+                }
+                is DataState.Error -> {
+                    displayProgressBar(false)
+                    displayMessage(dataState.error)
+                }
+                is DataState.Loading -> {
+                    displayContent(false)
+                    displayProgressBar(true)
+                }
+            }
+        }
     }
 
-    private fun subscribeObservers() {
-        profileViewModel.userInfo.observe(viewLifecycleOwner) {
-            et_profile_first_name.setText(it.firstName)
-            et_profile_last_name.setText(it.lastName)
-            tv_profile_login.text = it.login
-            tv_profile_rating.text = it.rating.toString()
-            cb_profile_tutor.isChecked = it.isTutor
-            if (it.isTutor) {
-                deletePreviousFragment()
-                childFragmentManager.commit {
-                    val fragment = ProfileTutorInfoFragment.newInstance()
-                    add(fl_profile_subjects.id, fragment)
-                    onAttachToChildFragment(fragment)
-                }
-            } else {
-                deletePreviousFragment()
+    private fun setContent(data: UserWrapperModel) {
+        et_profile_first_name.setText(data.userInfo.firstName)
+        et_profile_last_name.setText(data.userInfo.lastName)
+        tv_profile_login.text = data.userInfo.login
+        tv_profile_rating.text = data.userInfo.rating.toString()
+        cb_profile_tutor.isChecked = data.userInfo.isTutor
+        if (data.userInfo.isTutor) {
+            deletePreviousFragment()
+            childFragmentManager.commit {
+                val fragment = ProfileTutorInfoFragment.newInstance()
+                add(fl_profile_subjects.id, fragment)
+                onAttachToChildFragment(fragment)
             }
+        } else {
+            deletePreviousFragment()
         }
-        profileViewModel.isCorrectOldPassword.observe(viewLifecycleOwner) {
-            when(it) {
-                true -> {
-                    clearPasswordFields()
-                    Toast.makeText(context, getString(R.string.snackbar_profile_ok), Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    clearPasswordFields()
-                    Toast.makeText(context, getString(R.string.snackbar_profile_error_old_pass_incorrect), Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    }
+
+    private fun displayProgressBar(isDisplayed: Boolean){
+        pb_profile.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+    }
+
+    private fun displayContent(isDisplayed: Boolean){
+        tv_profile_title.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+        cv_profile_info.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+    }
+
+    private fun displayMessage(message: String){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private fun clearPasswordFields() {
@@ -124,11 +133,9 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
         if (oldPassword?.isNotEmpty() == true || newPassword?.isNotEmpty() == true) {
             if (oldPassword?.isEmpty() == true || newPassword?.isEmpty() == true) {
                 Toast.makeText(context, getString(R.string.snackbar_profile_error_pass_empty), Toast.LENGTH_SHORT).show()
-                // Snackbar.make(requireActivity().findViewById(R.id.main_parent), getString(R.string.snackbar_profile_error_pass_empty), Snackbar.LENGTH_SHORT).show()
                 return
             } else if (newPassword != null && newPassword.length < 8) {
                 Toast.makeText(context, getString(R.string.snackbar_profile_error_pass_length), Toast.LENGTH_LONG).show()
-                // Snackbar.make(requireActivity().findViewById(R.id.main_parent), getString(R.string.snackbar_sign_up_error_pass_length), Snackbar.LENGTH_LONG).show()
                 return
             } else if (oldPassword.equals(newPassword)) {
                 Toast.makeText(context, getString(R.string.snackbar_profile_error_pass_equality), Toast.LENGTH_LONG).show()
@@ -138,9 +145,12 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
             val tutorsInfo: ProfileTutorInfoModel? = tutorsInfoGetter?.getTutorsInfo()
             if (tutorsInfo == null) {
                 Toast.makeText(context, getString(R.string.snackbar_profile_error_tutor), Toast.LENGTH_SHORT).show()
-                // Snackbar.make(requireActivity().findViewById(R.id.main_parent), getString(R.string.snackbar_profile_error_tutor), Snackbar.LENGTH_SHORT).show()
                 return
             } else {
+                if (tutorsInfo.tutorsSubjects == null) {
+                    Toast.makeText(context, getString(R.string.snackbar_profile_error_tutor_same_subjects), Toast.LENGTH_SHORT).show()
+                    return
+                }
                 tutorsInfoModel = tutorsInfo
             }
         }
@@ -160,7 +170,6 @@ class ProfileFragment: Fragment(R.layout.fragment_profile), CoroutineScope by Ma
             profileViewModel.editProfile(profileUserWrapperModel)
         } else {
             Toast.makeText(context, getString(R.string.snackbar_profile_error_fill_fields), Toast.LENGTH_SHORT).show()
-            // Snackbar.make(requireActivity().findViewById(R.id.main_parent), getString(R.string.snackbar_profile_error_fill_fields), Snackbar.LENGTH_SHORT).show()
             return
         }
     }

@@ -2,11 +2,12 @@ package com.hfad.helpmewith.main.search.presentation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.hfad.helpmewith.R
 import com.hfad.helpmewith.app.data.model.UserWrapperModel
@@ -27,18 +28,34 @@ private const val CITY = "CITY"
 class SearchTutorsActivity : AppCompatActivity() {
 
     private val viewModel: SearchTutorsActivityViewModel by viewModels()
+    private lateinit var subjectName: String
+    private lateinit var maxHourlyFee: String
+    private lateinit var isNotRemote: String
+    private lateinit var city: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_tutors)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val extras = intent?.extras
-        val subjectName = extras?.get(SUBJECT).toString()
-        val maxHourlyFee = extras?.get(MAX_HOURLY_FEE).toString()
-        val isNotRemote = extras?.get(IS_NOT_REMOTE).toString()
-        val city = extras?.get(CITY).toString()
+        if (extras != null) {
+            subjectName = extras.get(SUBJECT).toString()
+            maxHourlyFee = extras.get(MAX_HOURLY_FEE).toString()
+            isNotRemote = extras.get(IS_NOT_REMOTE).toString()
+            city = extras.get(CITY).toString()
+        }
         observeViewState(subjectName)
         viewModel.getTutors(SearchModel(subjectName, maxHourlyFee, isNotRemote.toBoolean(), city))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun observeViewState(subjectName: String) {
@@ -62,7 +79,9 @@ class SearchTutorsActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerAdapterData(data: List<UserWrapperModel>, subjectName: String) {
-        rv_tutors.adapter = TutorsAdapter(data, subjectName) {
+        rv_tutors.adapter = TutorsAdapter(data, subjectName, {
+            TutorActivity.start(this, it)
+        }) {
 
         }
     }

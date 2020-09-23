@@ -2,13 +2,11 @@ package com.hfad.helpmewith.main.search.presentation
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.hfad.helpmewith.R
 import com.hfad.helpmewith.main.search.data.model.SearchModel
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(R.layout.fragment_search) {

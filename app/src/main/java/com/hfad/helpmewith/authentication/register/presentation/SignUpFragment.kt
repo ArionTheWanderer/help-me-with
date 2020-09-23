@@ -2,8 +2,8 @@ package com.hfad.helpmewith.authentication.register.presentation
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -43,8 +43,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up), CoroutineScope by Ma
                     add(fl_sign_up.id, fragment)
                     onAttachToChildFragment(fragment)
                 }
-                /*val fragment = childFragmentManager.findFragmentById(fl_sign_up.id)
-                onAttachToChildFragment(fragment)*/
             } else {
                 val fragment = childFragmentManager.findFragmentById(fl_sign_up.id)
                 if (fragment != null) {
@@ -70,7 +68,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up), CoroutineScope by Ma
             when (result) {
                 true -> {
                     listener?.signedUp()
-                    // Toast.makeText(context, "YES YES YES!!!", Toast.LENGTH_SHORT).show()
                 }
                 else -> Snackbar.make(requireActivity().findViewById(R.id.welcome_parent), getString(R.string.snackbar_sign_up_error_bad_request), Snackbar.LENGTH_SHORT).show()
             }
@@ -86,7 +83,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up), CoroutineScope by Ma
         if (cb_tutor.isChecked) {
             val tutorsInfo: SignUpTutorsInfoModel? = tutorsInfoGetter?.getTutorsInfo()
             if (tutorsInfo == null) {
-                // Toast.makeText(context, getString(R.string.snackbar_sign_up_error_tutor), Toast.LENGTH_SHORT).show()
                 Snackbar.make(requireActivity().findViewById(R.id.welcome_parent), getString(R.string.snackbar_sign_up_error_tutor), Snackbar.LENGTH_SHORT).show()
                 return
             } else {
