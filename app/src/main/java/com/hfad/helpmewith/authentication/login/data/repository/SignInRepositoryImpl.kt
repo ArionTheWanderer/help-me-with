@@ -19,16 +19,19 @@ class SignInRepositoryImpl
 
     override suspend fun postLogin(signInModel: SignInModel): Boolean {
         val signInForm = signInMapper.mapToEntity(signInModel)
-        val signInResponse = withContext(Dispatchers.IO) {
-            signInService.signIn(signInForm)
-        }
-
-        return if (signInResponse.isSuccessful) {
-            val token = signInResponse.body()!!.token
-            sessionManager.saveAuthToken(token)
-            Log.d(Constants.TOKEN_LOG, "TOKEN VALUE: ${sessionManager.fetchAuthToken()}")
-            true
-        } else {
+        return try {
+            val signInResponse = withContext(Dispatchers.IO) {
+                signInService.signIn(signInForm)
+            }
+            if (signInResponse.isSuccessful) {
+                val token = signInResponse.body()!!.token
+                sessionManager.saveAuthToken(token)
+                Log.d(Constants.TOKEN_LOG, "TOKEN VALUE: ${sessionManager.fetchAuthToken()}")
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
             false
         }
     }
