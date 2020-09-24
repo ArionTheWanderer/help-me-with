@@ -24,46 +24,54 @@ private val searchFormMapper: SearchFormMapper
     override suspend fun getTutors(searchModel: SearchModel): Flow<DataState<List<UserWrapperModel>>> = flow {
         emit(DataState.Loading)
         delay(1000)
-        val tutorsForm = searchFormMapper.mapToEntity(searchModel)
-        val tutorsResponse = searchService.findTutors(tutorsForm.subject,
-            tutorsForm.maxHourlyFee, tutorsForm.isNotRemote, tutorsForm.city)
-        if (tutorsResponse.isSuccessful) {
-            val tutorsBody = tutorsResponse.body()
-            if (tutorsBody != null) {
-                val tutorsModel = tutorsBody.let {
-                    tutorsResponseMapper.mapFromEntityList(
-                        it
-                    )
+        try {
+            val tutorsForm = searchFormMapper.mapToEntity(searchModel)
+            val tutorsResponse = searchService.findTutors(tutorsForm.subject,
+                tutorsForm.maxHourlyFee, tutorsForm.isNotRemote, tutorsForm.city)
+            if (tutorsResponse.isSuccessful) {
+                val tutorsBody = tutorsResponse.body()
+                if (tutorsBody != null) {
+                    val tutorsModel = tutorsBody.let {
+                        tutorsResponseMapper.mapFromEntityList(
+                            it
+                        )
+                    }
+                    emit(DataState.Success(tutorsModel))
+                } else {
+                    emit(DataState.Error("Body is empty"))
                 }
-                emit(DataState.Success(tutorsModel))
             } else {
-                emit(DataState.Error("Body is empty"))
+                emit(DataState.Error("Unsuccessful response"))
             }
-        } else {
-            emit(DataState.Error("Unsuccessful response"))
+        } catch (e: Exception){
+            emit(DataState.Error(e.message ?: "error message is empty; error: ${e.cause.toString()}"))
         }
     }
 
     override suspend fun getTutor(id: Long): Flow<DataState<UserWrapperModel>>  = flow {
         emit(DataState.Loading)
         delay(1000)
-        val tutorResponse = withContext(Dispatchers.IO) {
-            searchService.findTutor(id)
-        }
-        if (tutorResponse.isSuccessful) {
-            val tutorResponseBody = tutorResponse.body()
-            if (tutorResponseBody != null) {
-                val tutorModel = tutorResponseBody.let {
-                    tutorsResponseMapper.mapFromEntity(
-                        it
-                    )
-                }
-                emit(DataState.Success(tutorModel))
-            } else {
-                emit(DataState.Error("Body is empty"))
+        try {
+            val tutorResponse = withContext(Dispatchers.IO) {
+                searchService.findTutor(id)
             }
-        } else {
-            emit(DataState.Error("Bad request"))
+            if (tutorResponse.isSuccessful) {
+                val tutorResponseBody = tutorResponse.body()
+                if (tutorResponseBody != null) {
+                    val tutorModel = tutorResponseBody.let {
+                        tutorsResponseMapper.mapFromEntity(
+                            it
+                        )
+                    }
+                    emit(DataState.Success(tutorModel))
+                } else {
+                    emit(DataState.Error("Body is empty"))
+                }
+            } else {
+                emit(DataState.Error("Bad request"))
+            }
+        } catch (e: Exception){
+            emit(DataState.Error(e.message ?: "error message is empty; error: ${e.cause.toString()}"))
         }
     }
 }
